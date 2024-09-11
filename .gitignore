@@ -1,0 +1,8 @@
+node_modules
+.next
+out
+.eslintrc.json
+.prettierignore
+.prettierrc
+next.config.js
+package-lock.json
