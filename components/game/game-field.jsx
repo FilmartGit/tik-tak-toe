@@ -1,11 +1,58 @@
 import clsx from "clsx";
-import { CircleIcons } from "./icons/circle";
-import { CrossIcons } from "./icons/cross";
 import { UIButton } from "../uikit/ui-button";
+import { GameSymbole } from "./game-symbol";
+import { useGameState } from "./use-game-state";
 
-const cells = new Array(19 * 19).fill(null);
 
 export function GameField({ className }) {
+
+  const { cells, nextMove, currentMove, handleCellClick} = useGameState();
+  
+  const action = (
+    <>
+      <UIButton size="md" variant="primary">
+        Ничья
+      </UIButton>
+      <UIButton size="md" variant="outline">
+        Сдаться
+      </UIButton>
+    </>
+  );
+  return (
+    <GameFieldLayout className={className}>
+      <GameMoveInfo
+        action={action}
+        currentMove={currentMove}
+        nextMove={nextMove}
+      />
+      <GameGrid>
+        {cells.map((el, index) => (
+          <GameCell
+            key={index}
+            onClick={() => {
+              handleCellClick(index);
+            }}
+          >
+            {el && <GameSymbole symbol={el} />}
+          </GameCell>
+        ))}
+      </GameGrid>
+    </GameFieldLayout>
+  );
+}
+
+function GameCell({ children, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      className="border border-slate-200 -ml-px -mb-px flex items-center justify-center"
+    >
+      {children}
+    </button>
+  );
+}
+
+function GameFieldLayout({ children, className }) {
   return (
     <div
       className={clsx(
@@ -13,32 +60,31 @@ export function GameField({ className }) {
         className,
       )}
     >
-      <div className="flex w-full gap-3 items-center">
-        <div className="mr-auto">
-          <div className="flex items-center gap-1 text-xl font-semibold leading-tight">
-            Ход: <CircleIcons />
-          </div>
-          <div className="flex items-center gap-1 text-xs leading-tight text-slate-400">
-            Следующий: <CrossIcons />
-          </div>
-        </div>
-        <UIButton size="md" variant="primary">
-          Ничья
-        </UIButton>
-        <UIButton size="md" variant="outline">
-          Сдаться
-        </UIButton>
-      </div>
+      {children}
+    </div>
+  );
+}
 
-      <div className="grid grid-cols-[repeat(19,_30px)] grid-rows-[repeat(19,_30px)] pt-px pl-px mt-3">
-        {cells.map((_, i) => {
-          return (
-            <button key={i} className="border border-slate-200 -ml-px -mb-px flex items-center justify-center">
-              <CircleIcons />
-            </button>
-          );
-        })}
+function GameMoveInfo({ action, currentMove, nextMove }) {
+  return (
+    <div className="flex w-full gap-3 items-center">
+      <div className="mr-auto">
+        <div className="flex items-center gap-1 text-xl font-semibold leading-tight">
+          Ход: <GameSymbole symbol={currentMove}></GameSymbole>
+        </div>
+        <div className="flex items-center gap-1 text-xs leading-tight text-slate-400">
+          Следующий: <GameSymbole symbol={nextMove}></GameSymbole>
+        </div>
       </div>
+      {action}
+    </div>
+  );
+}
+
+function GameGrid({ children }) {
+  return (
+    <div className="grid grid-cols-[repeat(19,_30px)] grid-rows-[repeat(19,_30px)] pt-px pl-px mt-3">
+      {children}
     </div>
   );
 }
