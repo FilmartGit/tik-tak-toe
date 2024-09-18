@@ -14,7 +14,7 @@ export function Header() {
         Играть
       </UIButton>
       <button className="ml-auto flex items-center">
-        <Profile avatarSrc={avatarSrc} />
+        <Profile avatar={avatarSrc} name="GamePlayer" rating="1200"/>
         <Image src={arrowSrc} alt="#"></Image>
       </button>
     </header>
