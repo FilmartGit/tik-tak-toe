@@ -5,8 +5,8 @@ import { useState } from "react";
 
 // Главная функция приложения
 export default function HomePages() {
-  const [playersCount, setPlayerCount] = useState(4);
-  const { cells, nextMove, currentMove, handleCellClick } =
+  const [playersCount, setPlayerCount] = useState(2);
+  const { cells, nextMove, currentMove, handleCellClick, winnerSequence } =
     useGameState(playersCount);
 
   return (
@@ -25,6 +25,7 @@ export default function HomePages() {
           currentMove={currentMove}
           nextMove={nextMove}
           handleCellClick={handleCellClick}
+          winnerSequence={winnerSequence}
           className="mt-6"
         />
       </main>
