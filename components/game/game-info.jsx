@@ -39,7 +39,13 @@ const players = [
   },
 ];
 
-export function GameInfo({ className, playersCount, currentMove }) {
+export function GameInfo({
+  className,
+  playersCount,
+  currentMove,
+  isWinner,
+  onPlayerTimeover,
+}) {
   return (
     <div
       className={clsx(
@@ -50,16 +56,19 @@ export function GameInfo({ className, playersCount, currentMove }) {
       {players.slice(0, playersCount).map((player, index) => (
         <PlayerInfo
           key={player.id}
+          onTimeOver={() => {
+            onPlayerTimeover(player.symbol);
+          }}
           playerInfo={player}
           isRight={index % 2}
-          isTimingRunnig={currentMove === player.symbol}
+          isTimingRunnig={currentMove === player.symbol && !isWinner}
         />
       ))}
     </div>
   );
 }
 
-function PlayerInfo({ playerInfo, isRight, isTimingRunnig }) {
+function PlayerInfo({ playerInfo, isRight, isTimingRunnig, onTimeOver }) {
   const [seconds, setSeconds] = useState(60);
   let minuteString = String(Math.floor(seconds / 60)).padStart(2, "0");
   let secondString = String(seconds % 60).padStart(2, "0");
@@ -78,6 +87,13 @@ function PlayerInfo({ playerInfo, isRight, isTimingRunnig }) {
       setSeconds(60);
     };
   }, [isTimingRunnig]);
+
+  useEffect(() => {
+    if (seconds == 0) {
+      onTimeOver();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seconds]);
 
   return (
     <div className="flex items-center">
@@ -99,8 +115,11 @@ function PlayerInfo({ playerInfo, isRight, isTimingRunnig }) {
         className={clsx(
           " text-lg font-semibold w-[60px]",
           isRight && "order-1",
-          isDangers ? "text-orange-500" : 
-            isTimingRunnig ? "text-slate-900" : "text-slate-300",
+          isDangers
+            ? "text-orange-500"
+            : isTimingRunnig
+              ? "text-slate-900"
+              : "text-slate-300",
         )}
       >
         {minuteString}:{secondString}
