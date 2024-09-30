@@ -3,6 +3,8 @@ import { GameField, GameTitle, useGameState } from "../components/game";
 import { GameInfo } from "../components/game";
 import { useState } from "react";
 import { GameSymbole } from "../components/game/game-symbol";
+import { UIModal } from "../components/uikit/ui-modal";
+import { UIButton } from "../components/uikit/ui-button";
 
 // Главная
 export default function HomePages() {
@@ -29,11 +31,24 @@ export default function HomePages() {
           isWinner={!!winnerSymbol}
           onPlayerTimeover={handlePlayerTimeOver}
         />
+
         {winnerSymbol && (
           <div className="my-4">
             <GameSymbole symbol={winnerSymbol} />
           </div>
         )}
+
+        <UIModal width="md" isOpen={winnerSymbol} onClose={()=>{console.log('close')}}>
+          <UIModal.HEADER>Игра завершена!</UIModal.HEADER>
+          <UIModal.BODY>
+            <div className="text-sm">Победитель: <span className="text-teal-600">Хитрый лис</span></div>
+          </UIModal.BODY>
+          <UIModal.FOOTER>
+            <UIButton size="md" variant="outline">Вернуться</UIButton>
+            <UIButton size="md" variant="primary">Играть снова</UIButton>
+          </UIModal.FOOTER>
+        </UIModal>
+
         <GameField
           playersCount={playersCount}
           cells={cells}
