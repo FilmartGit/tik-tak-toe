@@ -1,6 +1,14 @@
-export function GameLayout({ backlink, title, info, playersList }) {
+export function GameLayout({
+  backlink,
+  title,
+  info,
+  playersList,
+  gameMoveInfo,
+  action,
+  gameCells,
+}) {
   return (
-    <div>
+    <div className=" pb-10">
       <div className="pl-2">
         {backlink}
         {title}
@@ -12,6 +20,16 @@ export function GameLayout({ backlink, title, info, playersList }) {
         }
       >
         {playersList}
+      </div>
+
+      <div className="bg-white pt-5 pb-7 px-8 rounded-2xl shadow-md flex flex-col mt-4">
+        <div className="flex w-full gap-3 items-center">
+          <div className="mr-auto">{gameMoveInfo}</div>
+          {action}
+        </div>
+        <div className="grid grid-cols-[repeat(19,_30px)] grid-rows-[repeat(19,_30px)] pt-px pl-px mt-3">
+          {gameCells}
+        </div>
       </div>
     </div>
   );
