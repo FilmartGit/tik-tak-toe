@@ -1,4 +1,6 @@
 export function computeWinner(cells, sequenceSize = 5, fieldSize = 19) {
+  console.log("render computeWinner");
+
   const gap = Math.floor(sequenceSize / 2);
 
   function compareElements(indexes) {

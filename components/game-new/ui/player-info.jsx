@@ -15,7 +15,6 @@ export function PlayerInfo({
 
   const now = useNow(1000, timerStartAt);
   const mils = Math.max(now ? timer - (now - timerStartAt) : timer);
-  
   const seconds = Math.ceil(mils / 1000);
 
   let minuteString = String(Math.floor(seconds / 60)).padStart(2, "0");
@@ -66,4 +65,4 @@ export function PlayerInfo({
       </div>
     </div>
   );
-}
+};
